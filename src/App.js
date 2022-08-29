@@ -37,7 +37,7 @@ function App() {
       { cmd: "printleftright", parameters: ["TotalQty: 3", "Amt: £6.75"] },
       {
         cmd: "printcenter",
-        parameters: ["***Cancelled Item(s)***"],
+        parameters: [" ", "***Cancelled Item(s)***"],
         fontsize: { width: 2, height: 2 }
       },
       { cmd: "printitemdetails", parameters: ["Product", "Qty", "Total"] },

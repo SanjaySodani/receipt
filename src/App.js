@@ -5,20 +5,13 @@ function App() {
     const data = [
       {
         cmd: "printcenter",
-        parameters: ["***Cancelled Item(s)***"],
-        fontsize: {
-          width: 2,
-          height: 2
-        }
-      },
-      {
-        cmd: "printcenter",
         parameters: ["*** Order Modified ***"],
         fontsize: {
           width: 2,
           height: 2
         }
       },
+
       {
         cmd: "printcenter",
         parameters: ["Please review this order"],
@@ -26,6 +19,22 @@ function App() {
           width: 2,
           height: 2
         }
+      },
+      {
+        cmd: "printNothing",
+        parameters: []
+      },
+      {
+        cmd: "printcenter",
+        parameters: ["*** Cancelled Item(s) ***"],
+        fontsize: {
+          width: 2,
+          height: 2
+        }
+      },
+      {
+        cmd: "printNothing",
+        parameters: []
       },
       {
         cmd: "cutpage",

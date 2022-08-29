@@ -26,5 +26,6 @@ setTimeout(() => {
     }
   ];
   console.log(data);
-  window.webprint.printText(data);
+  let dataString = JSON.stringify(data);
+  window.webprint.printText(dataString);
 }, 1000);

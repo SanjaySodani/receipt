@@ -25,7 +25,7 @@ setTimeout(() => {
       }
     }
   ];
-  console.log(data);
   let dataString = JSON.stringify(data);
+  console.log(dataString);
   window.webprint.printText(dataString);
 }, 1000);

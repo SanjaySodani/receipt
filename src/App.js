@@ -26,6 +26,10 @@ function App() {
           width: 2,
           height: 2
         }
+      },
+      {
+        cmd: "cutpage",
+        parameters: []
       }
     ];
     let dataString = JSON.stringify(data);

@@ -4,43 +4,29 @@ import { useState } from "react";
 function App() {
   const [fontSize, setFontSize] = useState("1");
   const [command, setCommand] = useState("select");
-  const [text, setText] = useState({
-    text: "",
-    isDisabled: true
-  });
+  const [text, setText] = useState("");
   const [printText, setPrintText] = useState([]);
 
-  const handleCommandChanged = com => {
-    setCommand(com);
-  };
-
-  const handleTextChanged = inputText => {
-    setText({ text: inputText });
-  };
-
   const handleAddCommand = () => {
-    if (
-      command !== "select" &&
-      command !== "printdivider" &&
-      command !== "printNothing" &&
-      command !== "select"
-    ) {
-      const printArray = printText;
-      printArray.push({
-        cmd: command,
-        parameters: text.text.split("$"),
-        fontsize: { width: fontSize, height: fontSize }
-      });
-      setPrintText(printArray);
-    } else if (command === "select") {
+    if (command === "select") {
       window.alert("Please choose a command!");
+    } else if (command === "printdivider" || command === "printnothing") {
+      setPrintText(prevArray => [
+        ...prevArray,
+        {
+          cmd: command,
+          parameters: []
+        }
+      ]);
     } else {
-      const printArray = printText;
-      printArray.push({
-        cmd: command,
-        parameters: []
-      });
-      setPrintText(printArray);
+      setPrintText(prevArray => [
+        ...prevArray,
+        {
+          cmd: command,
+          parameters: text.split("$"),
+          fontsize: { width: fontSize, height: fontSize }
+        }
+      ]);
     }
   };
 
@@ -51,8 +37,7 @@ function App() {
         cmd: "cutpage",
         parameters: []
       });
-      setPrintText(printArray);
-      let dataString = JSON.stringify(printText);
+      let dataString = JSON.stringify(printArray);
       console.log(dataString);
       window.webprint.printText(dataString);
       setCommand("select");
@@ -60,19 +45,6 @@ function App() {
       setText("");
     }
   };
-
-  // const handleButtonClick = () => {
-  //   const data = [
-  //     {
-  //       cmd: "printcenter",
-  //       parameters: ["**** ORDER MODIFIED ****"],
-  //       fontsize: { width: 2, height: 2 }
-  //     }
-  //   ];
-  //   let dataString = JSON.stringify(data);
-  //   console.log(dataString);
-  //   window.webprint.printText(dataString);
-  // };
 
   return (
     <div className="App">
@@ -88,9 +60,13 @@ function App() {
         </li>
       </ol>
       <ul>
-        {printText.map((item, index) => {
-          return <li key={index}>{item.cmd}</li>;
-        })}
+        {printText.length !== 0 ? (
+          printText.map((item, index) => {
+            return <li key={index}>{item.cmd}</li>;
+          })
+        ) : (
+          <small>Nothing added yet!</small>
+        )}
       </ul>
       <label htmlFor="font">Choose font size: </label>
       <select
@@ -110,13 +86,13 @@ function App() {
         id="command"
         name="command"
         onChange={e => {
-          handleCommandChanged(e.target.value);
+          setCommand(e.target.value);
         }}
         value={command}
       >
         <option value="select">Select</option>
         <option value="printcenter">Print Center</option>
-        <option value="printNothing">Print Nothing</option>
+        <option value="printnothing">Print Nothing</option>
         <option value="printleft">Print Left</option>
         <option value="printitemdetails">Print Item Details</option>
         <option value="printdivider">Print Divider</option>
@@ -127,8 +103,15 @@ function App() {
       <input
         type="text"
         placeholder="Type something"
-        value={text.text}
-        onChange={e => handleTextChanged(e.target.value)}
+        value={text}
+        onChange={e => setText(e.target.value)}
+        disabled={
+          command === "select" ||
+          command === "printdivider" ||
+          command === "printnothing"
+            ? true
+            : false
+        }
       />
       <button onClick={handleAddCommand}>+ Add</button>
       <br /> <br />
